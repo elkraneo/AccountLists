@@ -43,7 +43,7 @@ struct Account {
 struct AccountListsCoordinator {
     typealias accountCompletion = (accounts: [Account]) -> Void
     func fetchAccounts(@noescape completion: accountCompletion) throws {
-        if let path = Bundle.main().urlForResource("accounts", withExtension: "json") {
+        if let path = Bundle.main.urlForResource("accounts", withExtension: "json") {
             let accountResult = AccountListsCoordinator.accountsFromJSON(path: path) 
             switch accountResult {
             case .succes(let result):
