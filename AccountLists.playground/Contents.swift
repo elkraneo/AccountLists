@@ -41,8 +41,8 @@ struct Account {
 }
 
 struct AccountListsCoordinator {
-    typealias accountCompletion = (accounts: [Account]) -> Void
-    func fetchAccounts(@noescape completion: accountCompletion) throws {
+    typealias accountCompletion = @noescape (accounts: [Account]) -> Void
+    func fetchAccounts(completion: accountCompletion) throws {
         if let path = Bundle.main.urlForResource("accounts", withExtension: "json") {
             let accountResult = AccountListsCoordinator.accountsFromJSON(path: path) 
             switch accountResult {
@@ -144,8 +144,8 @@ struct AccountListPresenter {
     init(delegate: AccountListPresentable) {
         self.delegate = delegate
         do { 
-            try coordinator.fetchAccounts(completion: { (accounts) in
-                self.accounts = accounts
+            try coordinator.fetchAccounts(completion: { (fetchedAccounts) in
+                accounts = fetchedAccounts
             })
         }
         catch {
