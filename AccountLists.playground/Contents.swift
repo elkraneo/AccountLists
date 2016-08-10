@@ -13,10 +13,10 @@ enum AccountType: String {
 
 enum AccountResult {
     case succes([Account])
-    case failure(ErrorProtocol)
+    case failure(Error)
 }
 
-enum APIError: ErrorProtocol {
+enum APIError: Error {
     case emptyJSONData
     case invalidJSONData
     case invalidAccountNumber
@@ -43,7 +43,7 @@ struct Account {
 struct AccountListsCoordinator {
     typealias accountCompletion = @noescape (accounts: [Account]) -> Void
     func fetchAccounts(completion: accountCompletion) throws {
-        if let path = Bundle.main.urlForResource("accounts", withExtension: "json") {
+        if let path = Bundle.main.url(forResource: "accounts", withExtension: "json") {
             let accountResult = AccountListsCoordinator.accountsFromJSON(path: path) 
             switch accountResult {
             case .succes(let result):
@@ -158,6 +158,7 @@ struct AccountListPresenter {
     }
 }
 
+
 enum AccountListTableStyle {
     case standard, icon
 }
@@ -210,9 +211,9 @@ class AccountListTable: UITableViewController, AccountListPresentable {
         case .icon:
             switch account.accountType {
             case .saving:
-                cell.accountIcon.backgroundColor = UIColor.lightGray()  
+                cell.accountIcon.backgroundColor = UIColor.lightGray  
             case .payment:
-                cell.accountIcon.backgroundColor = UIColor.orange()  
+                cell.accountIcon.backgroundColor = UIColor.orange  
             }
         }
         
@@ -294,5 +295,5 @@ class TabBarController: UITabBarController {
 
 //MARK:- UI Setup
 let tabBarController = TabBarController()
-UITabBar.appearance().tintColor = UIColor.orange()
+UITabBar.appearance().tintColor = UIColor.orange
 PlaygroundPage.current.liveView = tabBarController
